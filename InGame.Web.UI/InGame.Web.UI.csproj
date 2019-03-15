@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <UserSecretsId>aspnet-InGame.Web.UI-AEE56F30-FE54-417A-9D03-9513781D2D68</UserSecretsId>
+    <AspNetCoreHostingModel>OutOfProcess</AspNetCoreHostingModel>
+    <AspNetCoreModuleName>AspNetCoreModule</AspNetCoreModuleName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\Account\**" />
+    <Compile Remove="Models\Manage\**" />
+    <Content Remove="Models\Account\**" />
+    <Content Remove="Models\Manage\**" />
+    <EmbeddedResource Remove="Models\Account\**" />
+    <EmbeddedResource Remove="Models\Manage\**" />
+    <None Remove="Models\Account\**" />
+    <None Remove="Models\Manage\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\InGame.Core\InGame.Core.csproj" />
+    <ProjectReference Include="..\InGame.Infrastructure\InGame.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
