@@ -69,7 +69,7 @@ namespace InGame.Core.Services
 
         public Task<IReadOnlyList<Category>> ListAllAsync()
         {
-            throw new NotImplementedException();
+           return _categoryRepository.ListAllAsync();
         }
 
         public Task<IReadOnlyList<Category>> ListAsync(ISpecification<Category> spec)

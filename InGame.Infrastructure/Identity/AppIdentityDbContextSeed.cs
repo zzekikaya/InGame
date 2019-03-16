@@ -1,4 +1,5 @@
-﻿using InGame.Core.Entities;
+﻿using System.Security.Claims;
+using InGame.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -12,6 +13,8 @@ namespace InGame.Infrastructure
             await userManager.CreateAsync(defaultUser, "Pass@word1");
 
             await userManager.AddToRoleAsync(defaultUser, "Admin");
+
+            await userManager.AddClaimAsync(defaultUser, new Claim("IsAdmin", "true"));
         }
     }
 }

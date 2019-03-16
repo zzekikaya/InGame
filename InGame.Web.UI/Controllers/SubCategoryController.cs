@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using InGame.Core.Entities;
+﻿using InGame.Core.Entities;
 using InGame.Core.Interfaces;
 using InGame.Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,13 +12,13 @@ namespace InGame.Web.UI.Controllers
 {
     public class SubCategoryController : Controller
     {
-        //private readonly InGameContext _context;
+        
         private readonly ISubCategoryService _subCategoryService;
         private readonly ICategoryService _categoryService;
         public SubCategoryController(InGameContext context, ISubCategoryService subCategoryService,
             ICategoryService categoryService)
         {
-            //_context = context;
+          
             _subCategoryService = subCategoryService;
             _categoryService = categoryService;
         }
@@ -26,20 +26,24 @@ namespace InGame.Web.UI.Controllers
         // GET: SubCategories
         public async Task<IActionResult> Index()
         {
-          var SubCategoryResult=  _subCategoryService.ListAllAsync().Result.ToList();
+            List<SubCategory> result = new List<SubCategory>();
 
-          var subCategories = SubCategoryResult.Select(p => new SubCategory
-          {
-              Id = p.Id,
-              SubCategoryName = p.SubCategoryName,
-              Description = p.Description,
-              CategoryID = p.CategoryID,
-              Category = _categoryService.GetCagetoryById(p.CategoryID.Value)
-          }).ToList();
+            result = _subCategoryService.ListAllAsync().Result.ToList();
+            if (result != null)
+            {
+                var subCategories = result.Select(p => new SubCategory
+                {
+                    Id = p.Id,
+                    SubCategoryName = p.SubCategoryName,
+                    Description = p.Description,
+                    CategoryID = p.CategoryID,
+                    Category = _categoryService.GetCagetoryById(p.CategoryID.Value)
+                }).ToList();
+            }
             //var inGameContext = _context.SubCategories.Include(s => s.Category);
             //return View(await inGameContext.ToListAsync());
 
-            return View(subCategories);
+            return View(result);
         }
 
         // GET: SubCategories/Details/5
@@ -50,8 +54,8 @@ namespace InGame.Web.UI.Controllers
                 return NotFound();
             }
 
-           var subCategory= _subCategoryService.GetSubCategoryId(id.Value);
-           subCategory.Category = _categoryService.GetCagetoryById(subCategory.CategoryID.Value);
+            var subCategory = _subCategoryService.GetSubCategoryId(id.Value);
+            subCategory.Category = _categoryService.GetCagetoryById(subCategory.CategoryID.Value);
             //var subCategory = await _context.SubCategories
             //    .Include(s => s.Category)
             //    .FirstOrDefaultAsync(m => m.Id == id);
@@ -66,7 +70,7 @@ namespace InGame.Web.UI.Controllers
         // GET: SubCategories/Create
         public IActionResult Create()
         {
-           var categories= _categoryService.ListAllAsync().Result.ToList();
+            var categories = _categoryService.ListAllAsync().Result.ToList();
             ViewData["CategoryID"] = new SelectList(categories, "Id", "Id");
             return View();
         }

@@ -7,7 +7,6 @@ namespace InGame.Web.UI.Models.CategoryViewModels
 {
     public class CagetoryViewModel
     {
-        public int CagetoryId { get; private set; }
         public string CagetoryName { get; private set; }
         public string Uri { get; private set; }
         public string PictureUri { get; private set; }

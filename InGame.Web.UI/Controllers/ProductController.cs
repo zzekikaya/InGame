@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace InGame.Web.UI.Controllers
 {
+    [Authorize(Roles = "Product_view")]
     public class ProductController : Controller
     {
         //private readonly InGameContext _context;

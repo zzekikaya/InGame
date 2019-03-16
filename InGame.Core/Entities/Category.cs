@@ -5,7 +5,6 @@ namespace InGame.Core.Entities
 {
     public class Category: BaseEntity, IAggregateRoot
     {
-        public int CategoryId { get; private set; }
         public string CategoryName { get; private set; }
         public string Uri { get; private set; }
         public string PictureUri { get; private set; }
