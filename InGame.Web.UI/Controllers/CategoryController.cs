@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using InGame.Core.Entities;
+using InGame.Core.Interfaces;
+using InGame.Infrastructure.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using InGame.Core.Entities;
-using InGame.Infrastructure.Data;
-using InGame.Web.UI.Models.CategoryViewModels;
 
 namespace InGame.Web.UI.Controllers
 {
@@ -15,15 +12,19 @@ namespace InGame.Web.UI.Controllers
     {
         private readonly InGameContext _context;
 
-        public CategoryController(InGameContext context)
+        private readonly ICategoryService _categoryService;
+        private readonly ISubCategoryService _subCategoryService;
+
+        public CategoryController(ICategoryService categoryService, ISubCategoryService subCategoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
+            _subCategoryService = subCategoryService;
         }
 
         // GET: Category
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _categoryService.ListAllAsync());
         }
 
         // GET: Category/Details/5
@@ -34,8 +35,7 @@ namespace InGame.Web.UI.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = _categoryService.GetCagetoryById(id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -60,8 +60,9 @@ namespace InGame.Web.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                  _context.SaveChangesAsync();
+                await _categoryService.AddAsync(category);
+                //_context.Add(category);
+                //_context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -75,7 +76,7 @@ namespace InGame.Web.UI.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = _categoryService.GetCagetoryById(id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -99,8 +100,9 @@ namespace InGame.Web.UI.Controllers
             {
                 try
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    await _categoryService.AddAsync(category);
+                    //_context.Update(category);
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,9 +127,9 @@ namespace InGame.Web.UI.Controllers
             {
                 return NotFound();
             }
-
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = _categoryService.GetCagetoryById(id.Value);
+            //var category = await _context.Categories
+            //    .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -140,10 +142,13 @@ namespace InGame.Web.UI.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+        { 
+            var category = _categoryService.GetCagetoryById(id);
+            if (category!=null)
+            {
+                _categoryService.UpdateCagetory(category);
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InGame.Infrastructure.Migrations
 {
     [DbContext(typeof(InGameContext))]
-    [Migration("20190315122517_InitialDbMigration2")]
-    partial class InitialDbMigration2
+    [Migration("20190317114151_InitialDbMigration21")]
+    partial class InitialDbMigration21
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,8 +27,6 @@ namespace InGame.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CategoryId");
-
                     b.Property<string>("CategoryName");
 
                     b.Property<string>("Description");
@@ -39,7 +37,7 @@ namespace InGame.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cagetories");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("InGame.Core.Entities.Product", b =>

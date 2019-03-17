@@ -11,14 +11,12 @@ namespace InGame.Web.UI.Controllers
 {
     [Authorize(Roles = "Product_view")]
     public class ProductController : Controller
-    {
-        //private readonly InGameContext _context;
+    { 
         private readonly IProductService _productService;
         private readonly ISubCategoryService _subCategoryService;
 
         public ProductController(IProductService productService, ISubCategoryService subCategoryService)
         {
-            //_context = context;
             _productService = productService;
             _subCategoryService = subCategoryService;
         }
@@ -39,9 +37,7 @@ namespace InGame.Web.UI.Controllers
                 SubCategoryID = p.SubCategoryID,
                 Subcategory = _subCategoryService.GetSubCategoryId(p.SubCategoryID.Value)
             }).ToList();
-
-            //var inGameContext = _context.Products.Include(p => p.Subcategory);
-            //return View(await inGameContext.ToListAsync());
+             
             return View(producties);
         }
 
@@ -55,10 +51,7 @@ namespace InGame.Web.UI.Controllers
 
             var product = _productService.GetProductById(id.Value);
             product.Subcategory = _subCategoryService.GetSubCategoryId(product.SubCategoryID.Value);
-
-            //var product = await _context.Products
-            //    .Include(p => p.Subcategory)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (product == null)
             {
                 return NotFound();
@@ -102,7 +95,6 @@ namespace InGame.Web.UI.Controllers
             }
 
             var product = _productService.GetProductById(id.Value);
-            //var product = await _context.Products.FindAsync(id);
             var subCategories = _subCategoryService.ListAllAsync().Result;
             if (product == null)
             {
@@ -130,8 +122,6 @@ namespace InGame.Web.UI.Controllers
                 {
                     _productService.UpdateProduct(product);
 
-                    //_context.Update(product);
-                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -160,9 +150,7 @@ namespace InGame.Web.UI.Controllers
             }
             var product = _productService.GetProductById(id.Value);
             product.Subcategory = _subCategoryService.GetSubCategoryId(product.SubCategoryID.Value);
-            //var product = await _context.Products
-            //    .Include(p => p.Subcategory)
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+  
             if (product == null)
             {
                 return NotFound();
@@ -176,9 +164,6 @@ namespace InGame.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //var product = await _context.Products.FindAsync(id);
-            //_context.Products.Remove(product);
-            //await _context.SaveChangesAsync();
             var product = _productService.GetProductById(id);
             await _productService.DeleteAsync(product);
             return RedirectToAction(nameof(Index));

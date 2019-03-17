@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using InGame.Core.Interfaces;
+﻿using InGame.Core.Interfaces;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace InGame.Core.Entities
 {
-    public class Category: BaseEntity, IAggregateRoot
+    public class Category :BaseEntity, IAggregateRoot
     {
         public string CategoryName { get; private set; }
         public string Uri { get; private set; }

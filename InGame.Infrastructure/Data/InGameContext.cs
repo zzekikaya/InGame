@@ -19,12 +19,6 @@ namespace InGame.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            //builder.Ignore<IdentityUserLogin<string>>();
-            //builder.Ignore<IdentityUserRole<string>>();
-            //builder.Ignore<IdentityUserClaim<string>>();
-            //builder.Ignore<IdentityUserToken<string>>();
-            //builder.Ignore<IdentityUser<string>>();
-            //builder.Ignore<ApplicationUser>();
             builder.Entity<Product>();
             builder.Entity<Category>();
             builder.Entity<SubCategory>();
