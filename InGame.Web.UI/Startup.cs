@@ -177,6 +177,12 @@ namespace InGame.Web.UI
 
             app.UseMvc(routes =>
             {
+                //* Ürün gösterme sayfasına girildiği zaman sayfa url kısmında ürünün adı yazmalı. localhost/m468-tek-atistavuransilah/32442 gibi. (Url routing)
+                routes.MapRoute(
+                    name: "Products",
+                    template: "{productname}/{id}",
+                    defaults: new { controller = "Product", action = "Details" });
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

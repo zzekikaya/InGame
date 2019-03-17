@@ -9,7 +9,6 @@ using System.Linq;
 namespace InGame.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
-    [Produces("application/json")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Trusted")]
     public class CategoryController : Controller
     {

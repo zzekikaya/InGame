@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using InGame.Api.Models;
 using InGame.Core.Entities;
 using InGame.Web.UI.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,7 @@ namespace InGame.Api.Controllers
 
     //[Route("[controller]/[action]")]
     [Route("api/[controller]")]
-    public class TokenController : Controller
+    public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -30,7 +31,7 @@ namespace InGame.Api.Controllers
         private IConfiguration _config;
         private readonly TokenOptions _tokenOptions;
 
-        public TokenController(
+        public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             //IEmailSender emailSender,
@@ -44,39 +45,34 @@ namespace InGame.Api.Controllers
             _config = config;
             _tokenOptions = tokens.Value;
         }
-         
-        [AllowAnonymous]
+
+
         [HttpPost]
-        public async Task<IActionResult> Token([FromBody] LoginViewModel model)
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            IActionResult response = Unauthorized();
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                   
+                    return BadRequest("Could not find account");
+                }
 
-            if (!ModelState.IsValid) return BadRequest("Could not create token");
+                // For more information on how to enable account confirmation and password reset please
+                // visit https://go.microsoft.com/fwlink/?LinkID=532713
+                var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+                //var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
+                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+                //    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
+                //return RedirectToAction(nameof(ForgotPasswordConfirmation));
+            }
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            return null;
+            // If we got this far, something failed, redisplay form
 
-            if (user == null) return BadRequest("Could not create token");
-
-            var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-
-            if (!result.Succeeded) return BadRequest("Could not create token");
-
-            var userClaims = await _userManager.GetClaimsAsync(user);
-
-            userClaims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Email));
-            userClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_tokenOptions.Key));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _tokenOptions.Issuer,
-                audience: _tokenOptions.Issuer,
-                claims: userClaims,
-                expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
-
-            return Ok(new JwtSecurityTokenHandler().WriteToken(token));
         }
     }
 }

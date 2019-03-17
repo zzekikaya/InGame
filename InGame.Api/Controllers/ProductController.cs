@@ -8,8 +8,7 @@ using System.Linq;
 
 namespace InGame.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [Produces("application/json")]
+    [Route("api/[controller]/[action]")] 
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Trusted")]
     public class ProductController : Controller
     {
@@ -46,7 +45,7 @@ namespace InGame.Api.Controllers
             return producties;
         }
 
-        // GET api/values/5
+        //ürün detay sayfasında Id kullanıldı.
         [HttpGet("{id}")]
         public ActionResult<Product> Get(int id)
         {
@@ -71,6 +70,7 @@ namespace InGame.Api.Controllers
             }
         }
 
+        //update işlemi için put kullanıldı.
         // PUT api/values/5
         [HttpPut("{id}")]
         public void UpdateProduct(int id, [FromBody] Product model)

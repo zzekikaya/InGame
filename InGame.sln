@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InGame.Infrastructure", "In
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InGame.Web.UI", "InGame.Web.UI\InGame.Web.UI.csproj", "{854E3E1D-B8BC-474A-A07D-B9948E1BE08B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InGame.Api", "InGame.Api\InGame.Api.csproj", "{CE6DE2BD-DA31-4D7B-85D8-0685BAA6A476}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InGame.Api", "InGame.Api\InGame.Api.csproj", "{CE6DE2BD-DA31-4D7B-85D8-0685BAA6A476}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InGame.Tests", "InGame.Tests\InGame.Tests.csproj", "{1D858AF1-1516-4DDD-A6A7-CBB072452C41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{CE6DE2BD-DA31-4D7B-85D8-0685BAA6A476}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE6DE2BD-DA31-4D7B-85D8-0685BAA6A476}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE6DE2BD-DA31-4D7B-85D8-0685BAA6A476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D858AF1-1516-4DDD-A6A7-CBB072452C41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D858AF1-1516-4DDD-A6A7-CBB072452C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D858AF1-1516-4DDD-A6A7-CBB072452C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D858AF1-1516-4DDD-A6A7-CBB072452C41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
