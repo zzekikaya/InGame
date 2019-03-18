@@ -60,9 +60,7 @@ namespace InGame.Web.UI.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _categoryService.AddAsync(category);
-                //_context.Add(category);
-                //_context.SaveChangesAsync();
+                await _categoryService.AddAsync(category); 
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -100,9 +98,7 @@ namespace InGame.Web.UI.Controllers
             {
                 try
                 {
-                    await _categoryService.AddAsync(category);
-                    //_context.Update(category);
-                    //await _context.SaveChangesAsync();
+                    await _categoryService.UpdateCagetory(category);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -127,9 +123,7 @@ namespace InGame.Web.UI.Controllers
             {
                 return NotFound();
             }
-            var category = _categoryService.GetCagetoryById(id.Value);
-            //var category = await _context.Categories
-            //    .FirstOrDefaultAsync(m => m.Id == id);
+            var category = _categoryService.GetCagetoryById(id.Value); 
             if (category == null)
             {
                 return NotFound();

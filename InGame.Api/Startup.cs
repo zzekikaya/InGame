@@ -78,17 +78,19 @@ namespace InGame.Api
                     };
                 });
 
+            //email göndermek için
             services.Configure<AuthMessageSenderOptions>(options => Configuration.GetSection("Secret").Bind(options));
-            // Add application services.
-            //services.AddTransient<IEmailSender, EmailSender>();
+         
 
             services.AddMvc();
 
             //action methodların geriye json dönmeleri için tanımlandı.
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
-            //api için kullanıcıların claim yetkisi tanımlanması gerekir.
-            services.AddAuthorization(options => options.AddPolicy("Trusted", policy => policy.RequireClaim("Authorization", "Api")));
+            //api için kullanıcıların claim yetkisi tanımlandı.
+            //kayıtlı olan her kullanıcı token alabilir fakat apiden Crud işlemleri için mvc projesinde claimlardan api yetkisi kullanabilmesi için.
+            //böylece her kullanıcı api kullanmak yerine biraz daha spesifikleştirerek claim yetkisi de tanımlanması gerekir.
+            services.AddAuthorization(options => options.AddPolicy("Trusted", policy => policy.RequireClaim("Api", "Api")));
              
             services.Configure<Extensions.TokenOptions>(Configuration.GetSection("TokenOptions")); 
         }

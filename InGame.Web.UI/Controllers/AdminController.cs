@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace InGame.Web.UI.Controllers
@@ -332,12 +333,14 @@ namespace InGame.Web.UI.Controllers
             if (user == null)
                 return RedirectToAction("UserManagement", _userManager.Users);
 
-            IdentityUserClaim<string> claim =
-                new IdentityUserClaim<string> { ClaimType = claimsManagementViewModel.ClaimId, ClaimValue = claimsManagementViewModel.ClaimId };
+            List<Claim> claims = new List<Claim>();
+            Claim claim = new Claim(claimsManagementViewModel.ClaimId, claimsManagementViewModel.ClaimId);
+            claims.Add(claim);
+            //IdentityUserClaim<string> claim =
+            //    new IdentityUserClaim<string> { ClaimType = claimsManagementViewModel.ClaimId, ClaimValue = claimsManagementViewModel.ClaimId };
 
+            await _userManager.AddClaimsAsync(user, claims);
             //user.Claims.Add(claim);
-
-
 
             var result = await _userManager.UpdateAsync(user);
 

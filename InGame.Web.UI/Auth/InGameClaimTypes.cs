@@ -7,6 +7,6 @@ namespace InGame.Web.UI.Auth
 {
     public class InGameClaimTypes
     {
-        public static List<string> ClaimsList { get; set; } = new List<string> { "Delete Product", "Add Product", "product_view" };
+        public static List<string> ClaimsList { get; set; } = new List<string> { "Delete Product", "Add Product", "product_view", "Api" };
     }
 }

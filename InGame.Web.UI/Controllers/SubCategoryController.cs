@@ -64,7 +64,7 @@ namespace InGame.Web.UI.Controllers
         public IActionResult Create()
         {
             var categories = _categoryService.ListAllAsync().Result.ToList();
-            ViewData["CategoryID"] = new SelectList(categories, "Id", "Id");
+            ViewData["CategoryID"] = new SelectList(categories, "Id", "CategoryName");
             return View();
         }
 
@@ -82,7 +82,7 @@ namespace InGame.Web.UI.Controllers
             }
 
             var categories = _categoryService.ListAllAsync().Result.ToList();
-            ViewData["CategoryID"] = new SelectList(categories, "Id", "Id", subCategory.CategoryID);
+            ViewData["CategoryID"] = new SelectList(categories, "Id", "CategoryName", subCategory.CategoryID);
             return View(subCategory);
         }
 
@@ -101,7 +101,7 @@ namespace InGame.Web.UI.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(categories, "Id", "Id", subCategory.CategoryID);
+            ViewData["CategoryID"] = new SelectList(categories, "Id", "CategoryName", subCategory.CategoryID);
             return View(subCategory);
         }
 
@@ -137,7 +137,7 @@ namespace InGame.Web.UI.Controllers
                 return RedirectToAction(nameof(Index));
             }
             var categories = _categoryService.ListAllAsync().Result.ToList();
-            ViewData["CategoryID"] = new SelectList(categories, "Id", "Id", subCategory.CategoryID);
+            ViewData["CategoryID"] = new SelectList(categories, "Id", "CategoryName", subCategory.CategoryID);
             return View(subCategory);
         }
 

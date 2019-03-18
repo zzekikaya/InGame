@@ -17,8 +17,7 @@ namespace InGame.Api.Controllers
         private readonly ICategoryService _categoryService;
 
         public ProductController(IProductService productService, ISubCategoryService subCategoryService, ICategoryService categoryService)
-        {
-            //_context = context;
+        { 
             _productService = productService;
             _subCategoryService = subCategoryService;
             _categoryService = categoryService;
