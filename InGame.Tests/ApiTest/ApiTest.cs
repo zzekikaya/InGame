@@ -62,21 +62,6 @@ namespace InGame.Tests.ApiTest
         }
 
         [Fact]
-        public async Task InValidToken()
-        {
-            var bodyString = @"{Email: ""zzeki@gmail.com"", Password: ""yanlış şifre""}";
-            var response = await _client.PostAsync("/api/Token",
-                new StringContent(bodyString, Encoding.UTF8, "application/json"));
-
-            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-
-            var token = await response.Content.ReadAsStringAsync();
-            //var responseJson = JObject.Parse(responseString);
-            Assert.NotNull(token);
-        }
-
-
-        [Fact]
         public async Task GetProductList()
         {
             var bodyString = @"{Email: ""zzeki@gmail.com"", password: ""Pass@word1""}";

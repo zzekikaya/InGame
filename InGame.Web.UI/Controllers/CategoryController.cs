@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using InGame.Web.UI.Models.CategoryViewModels;
 
 namespace InGame.Web.UI.Controllers
 {
@@ -14,11 +16,13 @@ namespace InGame.Web.UI.Controllers
 
         private readonly ICategoryService _categoryService;
         private readonly ISubCategoryService _subCategoryService;
+        private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryService categoryService, ISubCategoryService subCategoryService)
+        public CategoryController(ICategoryService categoryService, ISubCategoryService subCategoryService, IMapper mapper)
         {
             _categoryService = categoryService;
             _subCategoryService = subCategoryService;
+            _mapper = mapper;
         }
 
         // GET: Category
@@ -55,12 +59,12 @@ namespace InGame.Web.UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoryName,Uri,PictureUri,Description,Id")]  Category category)
+        public async Task<IActionResult> Create([Bind("CategoryName,Uri,PictureUri,Description,Id")]CategoryViewModel category)
 
         {
             if (ModelState.IsValid)
             {
-                await _categoryService.AddAsync(category); 
+                await _categoryService.AddAsync(null); 
                 return RedirectToAction(nameof(Index));
             }
             return View(category);

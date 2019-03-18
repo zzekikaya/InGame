@@ -79,10 +79,11 @@ namespace InGame.Infrastructure.Data
         }
 
         public IQueryable<T> GetAll(Expression<Func<T, bool>> predicate)
-        {
+        { 
+           
             return _dbSet.Where(predicate);
         }
-
+        
         public Task<IReadOnlyList<T>> GetListByIdAsync(int id)
         {
             throw new NotImplementedException();

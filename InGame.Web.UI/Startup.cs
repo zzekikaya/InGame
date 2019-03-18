@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using AutoMapper;
 using System.Threading.Tasks;
 using InGame.Common.MailService;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -34,7 +35,7 @@ namespace InGame.Web.UI
         {
             ConfigureCookieSettings(services);
             CreateIdentityIfNotCreated(services);
-
+            services.AddAutoMapper();
             //user context
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -55,7 +56,7 @@ namespace InGame.Web.UI
             services.Configure<AuthMessageSenderOptions>(Configuration.GetSection("Secret"));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+            
             // Add memory cache services
             services.AddMemoryCache();
             services.AddHttpContextAccessor();
@@ -64,6 +65,7 @@ namespace InGame.Web.UI
         //cache ayarları
         private static void ConfigureCookieSettings(IServiceCollection services)
         {
+        
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.

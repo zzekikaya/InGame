@@ -92,7 +92,7 @@ namespace InGame.Core.Services
 
         public IQueryable<Product> GetAll(Expression<Func<Product, bool>> predicate)
         {
-            throw new NotImplementedException();
+          return  _productRepository.GetAll(predicate);
         }
 
         public Task<IReadOnlyList<Product>> GetListByIdAsync(int id)
