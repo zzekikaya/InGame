@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace InGame.Web.UI.Mail
+namespace InGame.Common.MailService
 {
   public  class AuthMessageSenderOptions
     {

@@ -9,7 +9,7 @@ namespace InGame.Api.Models
     public class ForgotPasswordViewModel
     {
         [Required]
-        [EmailAddress]
+        //[EmailAddress]
         public string Email { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using InGame.Api.Extensions;
 using InGame.Core.Entities;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +24,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using InGame.Common.MailService;
+
 
 namespace InGame.Api
 {
@@ -53,6 +57,7 @@ namespace InGame.Api
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ISubCategoryService, SubCategoryService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
              
             services.AddAuthentication( /*o =>
@@ -73,6 +78,7 @@ namespace InGame.Api
                     };
                 });
 
+            services.Configure<AuthMessageSenderOptions>(options => Configuration.GetSection("Secret").Bind(options));
             // Add application services.
             //services.AddTransient<IEmailSender, EmailSender>();
 

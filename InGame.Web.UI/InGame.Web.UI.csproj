@@ -32,6 +32,7 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\InGame.Common\InGame.Common.csproj" />
     <ProjectReference Include="..\InGame.Core\InGame.Core.csproj" />
     <ProjectReference Include="..\InGame.Infrastructure\InGame.Infrastructure.csproj" />
   </ItemGroup>

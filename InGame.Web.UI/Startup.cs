@@ -15,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
-using InGame.Web.UI.Mail;
+using InGame.Common.MailService;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace InGame.Web.UI

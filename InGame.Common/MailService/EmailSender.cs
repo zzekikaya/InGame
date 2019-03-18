@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
+ 
+using System.Threading.Tasks;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System.Threading.Tasks;
 
-namespace InGame.Web.UI.Mail
+namespace InGame.Common.MailService
 {
 
     public class EmailSender : IEmailSender

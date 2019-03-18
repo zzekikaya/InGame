@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using InGame.Api.Models;
+﻿using InGame.Api.Models;
 using InGame.Core.Entities;
-using InGame.Web.UI.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -14,14 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using System.Threading.Tasks;
 using TokenOptions = InGame.Api.Extensions.TokenOptions;
 
 namespace InGame.Api.Controllers
 {
-
-    //[Route("[controller]/[action]")]
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -34,45 +25,58 @@ namespace InGame.Api.Controllers
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            //IEmailSender emailSender,
+            IEmailSender emailSender,
             ILogger<TokenController> logger,
             IConfiguration config, IOptions<TokenOptions> tokens)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            //_emailSender = emailSender;
+            _emailSender = emailSender;
             _logger = logger;
             _config = config;
             _tokenOptions = tokens.Value;
         }
 
-
-        [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
                 if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
                 {
-                   
+
                     return BadRequest("Could not find account");
                 }
 
                 // For more information on how to enable account confirmation and password reset please
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-                //var callbackUrl = Url.ResetPasswordCallbackLink(user.Id, code, Request.Scheme);
-                //await _emailSender.SendEmailAsync(model.Email, "Reset Password",
-                //    $"Please reset your password by clicking here: <a href='{callbackUrl}'>link</a>");
-                //return RedirectToAction(nameof(ForgotPasswordConfirmation));
+                await _emailSender.SendEmailAsync(model.Email, "Reset Password",
+                    $"Please reset your password by using this {code}");
             }
 
-            return null;
-            // If we got this far, something failed, redisplay form
+            return Ok();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _userManager.FindByEmailAsync(model.Email).Result;
+                if (user != null)
+                {
+                    var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
+                    if (result.Succeeded)
+                    {
+                        return Ok();
+                    }
+                    return Ok();
+                }
+            }
+            return NotFound();
         }
     }
 }
