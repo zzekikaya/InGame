@@ -5,7 +5,7 @@ using InGame.Core.Services;
 using Moq;
 using Xunit;
 
-namespace InGame.Tests.CoreTest
+namespace InGame.Tests.InGame.Core.Test
 {
     public class ProductTest
     {

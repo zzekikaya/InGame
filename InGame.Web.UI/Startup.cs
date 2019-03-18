@@ -56,7 +56,6 @@ namespace InGame.Web.UI
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-
             // Add memory cache services
             services.AddMemoryCache();
             services.AddHttpContextAccessor();

@@ -7,7 +7,9 @@ using SendGrid.Helpers.Mail;
 
 namespace InGame.Common.MailService
 {
-
+    //mvc ve api'den şifresmi unuttum işlemleri için ortak bir proje oluşturdum. 
+    //ayağa kalktığı uygulamadan appsettings dosyasındaki Secret  bilgilerini alarak owin üzerinden mail atar.
+    // maili admin@gmail.com kullanıcının tablodaki bilgilerini okuyarak mail atar
     public class EmailSender : IEmailSender
     {
         public EmailSender(IOptions<AuthMessageSenderOptions> optionsAccessor)

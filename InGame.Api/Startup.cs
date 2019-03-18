@@ -80,7 +80,6 @@ namespace InGame.Api
 
             //email göndermek için
             services.Configure<AuthMessageSenderOptions>(options => Configuration.GetSection("Secret").Bind(options));
-         
 
             services.AddMvc();
 
