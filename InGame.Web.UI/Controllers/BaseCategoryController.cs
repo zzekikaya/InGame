@@ -26,21 +26,7 @@ namespace InGame.Web.UI.Controllers
         {
             var categories = _categoryService.ListAllAsync();
             var categoryModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.Result.ToList());
-            List<CategoryViewModels> result = new List<CategoryViewModels>();
-            if (categoryModelList != null)
-            {
-                result = categoryModelList.Select(p => new CategoryViewModels
-                {
-                    Id = p.Id,
-                    CategoryId = p.CategoryId,
-                    CategoryName = p.CategoryName,
-                    ParentCategoryId = p.ParentCategoryId, 
-                    Uri = p.Uri,
-                    PictureUri = p.PictureUri,
-                    Description = p.Description
-                }).ToList();
-            }
-            return View(result);
+            return View(categoryModelList);
         }
 
 
