@@ -15,13 +15,13 @@ namespace InGame.Infrastructure.Data
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<SubCategory> SubCategories { get; set; }
+        //public DbSet<SubCategory> SubCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Product>();
             builder.Entity<Category>();
-            builder.Entity<SubCategory>();
+            //builder.Entity<SubCategory>();
         }
     }
 }

@@ -10,19 +10,16 @@ namespace InGame.Core.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IAsyncRepository<Product> _productRepository;
-        private readonly IAsyncRepository<SubCategory> _subCategoryRepository;
+        private readonly IAsyncRepository<Product> _productRepository; 
         private readonly IAppLogger<ProductService> _logger;
 
         public IQueryable<Product> Set => throw new NotImplementedException();
 
         public ProductService(IAsyncRepository<Product> productRepository,
-            IAppLogger<ProductService> logger,
-            IAsyncRepository<SubCategory> subCategoryRepository)
+            IAppLogger<ProductService> logger)
         {
             _productRepository = productRepository;
-            _logger = logger;
-            _subCategoryRepository = subCategoryRepository;
+            _logger = logger; 
         }
         public Task<Product> GetByIdAsync(int id)
         {

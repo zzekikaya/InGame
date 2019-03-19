@@ -13,13 +13,11 @@ namespace InGame.Api.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
-        private readonly ISubCategoryService _subCategoryService;
         private readonly ICategoryService _categoryService;
 
-        public ProductController(IProductService productService, ISubCategoryService subCategoryService, ICategoryService categoryService)
+        public ProductController(IProductService productService, ICategoryService categoryService)
         { 
             _productService = productService;
-            _subCategoryService = subCategoryService;
             _categoryService = categoryService;
         }
 
@@ -37,8 +35,8 @@ namespace InGame.Api.Controllers
                 IsActive = p.IsActive,
                 PictureUri = p.PictureUri,
                 Price = p.Price,
-                SubCategoryID = p.SubCategoryID,
-                Subcategory = _subCategoryService.GetSubCategoryId(p.SubCategoryID.Value)
+                CategoryId = p.CategoryId,
+                Category = _categoryService.Get(x=>x.CategoryId==p.CategoryId)
             }).ToList();
 
             return producties;
@@ -51,9 +49,8 @@ namespace InGame.Api.Controllers
             var product = _productService.GetProductById(id);
             if (product != null)
             {
-                product.Subcategory = _subCategoryService.GetSubCategoryId(product.SubCategoryID.Value);
-
-                product.Subcategory.Category = _categoryService.GetCagetoryById(product.Subcategory.CategoryID.Value);
+                product.Category = _categoryService.Get(x=>x.CategoryId==product.CategoryId.Value);
+                 
             }
 
             return product;
@@ -91,7 +88,7 @@ namespace InGame.Api.Controllers
 
         private bool ProductExists(int id)
         {
-            return _subCategoryService.IsAny(x => x.Id == id);
+            return _categoryService.IsAny(x => x.Id == id);
         }
     }
 }

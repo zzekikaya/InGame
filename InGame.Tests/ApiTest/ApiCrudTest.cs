@@ -1,19 +1,16 @@
-﻿using System;
-using InGame.Api;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Configuration;
-using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
+﻿using InGame.Api;
 using InGame.Core.Entities;
 using InGame.Core.Interfaces;
 using InGame.Core.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Configuration;
 using Moq;
-using Newtonsoft.Json;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace InGame.Tests.ApiTest
@@ -25,7 +22,7 @@ namespace InGame.Tests.ApiTest
 
         private Mock<IAsyncRepository<Product>> _mockProductRepo;
 
-    public ApiCrudTest()
+        public ApiCrudTest()
         {
             _mockProductRepo = new Mock<IAsyncRepository<Product>>();
 
@@ -63,7 +60,7 @@ namespace InGame.Tests.ApiTest
                 Description = "ucuz item"
             };
 
-            var productService = new ProductService(_mockProductRepo.Object, null, null);
+            var productService = new ProductService(_mockProductRepo.Object, null);
 
             await productService.AddAsync(request);
             _mockProductRepo.Verify(x => x.AddAsync(request), Times.Once);
@@ -89,7 +86,7 @@ namespace InGame.Tests.ApiTest
                 Description = "ucuz item"
             };
 
-            var productService = new ProductService(_mockProductRepo.Object, null, null);
+            var productService = new ProductService(_mockProductRepo.Object, null);
 
             await productService.UpdateAsync(request);
             _mockProductRepo.Verify(x => x.UpdateAsync(request), Times.Once);
@@ -112,7 +109,7 @@ namespace InGame.Tests.ApiTest
             _mockProductRepo.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(product);
 
-            var productService = new ProductService(_mockProductRepo.Object, null, null);
+            var productService = new ProductService(_mockProductRepo.Object, null);
 
             await productService.DeleteAsync(product);
             _mockProductRepo.Verify(x => x.DeleteAsync(product), Times.Once);

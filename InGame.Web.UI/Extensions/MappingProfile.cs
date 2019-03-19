@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using InGame.Core.Entities;
-using InGame.Web.UI.Models.CategoryViewModels;
+using InGame.Web.UI.Models.ParentCategoryViewModels;
 using InGame.Web.UI.Models.ProductViewModels;
 
 namespace InGame.Web.UI.Extensions
@@ -16,11 +12,8 @@ namespace InGame.Web.UI.Extensions
             CreateMap<Product, ProductViewModel>();
             CreateMap<ProductViewModel, Product>();
 
-            CreateMap<SubCategory, SubCategoryViewModel>();
-            CreateMap<SubCategoryViewModel, SubCategory>();
-
-            CreateMap<Category, CategoryViewModel>();
-            CreateMap<CategoryViewModel, Category>();
+            CreateMap<Category, CategoryViewModels>();
+            CreateMap<CategoryViewModels, Category>();
         }
     }
 }

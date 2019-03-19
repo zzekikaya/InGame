@@ -9,7 +9,7 @@ namespace InGame.Core.Entities
         public decimal Price { get; set; }
         public string PictureUri { get; set; }
         public bool IsActive { get; set; }
-        public int? SubCategoryID { get; set; }
-        public virtual SubCategory Subcategory { get; set; }
+        public int? CategoryId { get; set; }
+        public virtual Category Category { get; set; }
     }
 }

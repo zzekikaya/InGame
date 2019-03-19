@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using InGame.Core.Entities;
-using InGame.Core.Interfaces;
-using InGame.Web.UI.Models.CategoryViewModels;
-using InGame.Web.UI.Models.ProductViewModels;
-using InGame.Web.UI.Models.SubCategoryViewModels;
+using InGame.Core.Interfaces; 
+using InGame.Web.UI.Models.ProductViewModels; 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InGame.Web.UI.Models.ParentCategoryViewModels;
 
 namespace InGame.Web.UI.Controllers
 {
@@ -18,13 +17,13 @@ namespace InGame.Web.UI.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
-        private readonly ISubCategoryService _subCategoryService;
+        private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
 
-        public ProductController(IProductService productService, ISubCategoryService subCategoryService, IMapper mapper)
+        public ProductController(IProductService productService, IMapper mapper, ICategoryService categoryService)
         {
             _productService = productService;
-            _subCategoryService = subCategoryService;
+            _categoryService = categoryService;
             _mapper = mapper;
         }
 
@@ -41,13 +40,14 @@ namespace InGame.Web.UI.Controllers
                 IsActive = p.IsActive,
                 PictureUri = p.PictureUri,
                 Price = p.Price,
-                SubCategoryID = p.SubCategoryID,
-                Subcategory = _subCategoryService.GetSubCategoryId(p.SubCategoryID.Value)
+                CategoryId = p.CategoryId,
+                Category = _categoryService.Get(x=>x.CategoryId==p.CategoryId)
             }).ToList();
 
             var ProductModelList = _mapper.Map<List<Product>, List<ProductViewModel>>(producties);
 
             return View(ProductModelList);
+            return null;
         }
 
         // GET: Product/Details/5
@@ -59,10 +59,10 @@ namespace InGame.Web.UI.Controllers
             }
 
             var product = _productService.GetProductById(id.Value);
-            product.Subcategory = _subCategoryService.GetSubCategoryId(product.SubCategoryID.Value);
+            product.Category = _categoryService.Get(x=>x.CategoryId==id);
 
             var ProductModel = _mapper.Map<Product, ProductViewModel>(product);
-            ProductModel.Subcategory = _mapper.Map<SubCategory, SubCategoryViewModel>(product.Subcategory);
+            ProductModel.Category = _mapper.Map<Category, CategoryViewModels>(product.Category);
 
             if (ProductModel == null)
             {
@@ -70,14 +70,15 @@ namespace InGame.Web.UI.Controllers
             }
 
             return View(ProductModel);
+
         }
 
         // GET: Product/Create
         public IActionResult Create()
         {
-            var subcategories = _subCategoryService.ListAllAsync().Result;
-            var subCategoryModelList = _mapper.Map<List<SubCategory>, List<SubCategoryViewModel>>(subcategories.ToList());
-            ViewData["SubCategoryID"] = new SelectList(subCategoryModelList, "Id", "SubCategoryName");
+            var subcategories = _categoryService.ListAllAsync().Result;
+            var subCategoryModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(subcategories.ToList());
+            ViewData["CategoryID"] = new SelectList(subCategoryModelList, "Id", "CategoryName");
             return View();
         }
 
@@ -86,7 +87,7 @@ namespace InGame.Web.UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,Price,PictureUri,IsActive,SubCategoryID,Id")] ProductViewModel product)
+        public async Task<IActionResult> Create([Bind("Name,Description,Price,PictureUri,IsActive,CategoryID,Id")] ProductViewModel product)
         {
             if (ModelState.IsValid)
             {
@@ -95,9 +96,9 @@ namespace InGame.Web.UI.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var subCategories = _subCategoryService.ListAllAsync().Result;
-            var subCategoryModelList = _mapper.Map<List<SubCategory>, List<SubCategoryViewModel>>(subCategories.ToList());
-            ViewData["SubCategoryID"] = new SelectList(subCategoryModelList, "Id", "SubCategoryName", product.SubCategoryID);
+            var categories = _categoryService.ListAllAsync().Result;
+            var subCategoryModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
+            ViewData["CategoryID"] = new SelectList(subCategoryModelList, "Id", "CategoryName", product.CategoryID);
             return View(product);
         }
 
@@ -110,19 +111,20 @@ namespace InGame.Web.UI.Controllers
             }
 
             var product = _productService.GetProductById(id.Value);
-            var subCategories = _subCategoryService.ListAllAsync().Result;
+            var categories = _categoryService.ListAllAsync().Result;
 
             var ProductModel = _mapper.Map<Product, ProductViewModel>(product);
-            ProductModel.Subcategory = _mapper.Map<SubCategory, SubCategoryViewModel>(product.Subcategory);
-            var subCategoryModelList = _mapper.Map<List<SubCategory>, List<SubCategoryViewModel>>(subCategories.ToList());
+            ProductModel.Category = _mapper.Map<Category, CategoryViewModels>(product.Category);
+            var subCategoryModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
 
 
             if (ProductModel == null)
             {
                 return NotFound();
             }
-            ViewData["SubCategoryID"] = new SelectList(subCategoryModelList, "Id", "SubCategoryName", product.SubCategoryID);
+            ViewData["CategoryID"] = new SelectList(subCategoryModelList, "Id", "CategoryName", product.CategoryId);
             return View(ProductModel);
+
         }
 
         // POST: Product/Edit/5
@@ -130,7 +132,7 @@ namespace InGame.Web.UI.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Name,Description,Price,PictureUri,IsActive,SubCategoryID,Id")] ProductViewModel product)
+        public async Task<IActionResult> Edit(int id, [Bind("Name,Description,Price,PictureUri,IsActive,CategoryID,Id")] ProductViewModel product)
         {
             if (id != product.Id)
             {
@@ -159,10 +161,10 @@ namespace InGame.Web.UI.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var subCategories = _subCategoryService.ListAllAsync().Result;
+            var categories = _categoryService.ListAllAsync().Result;
 
-            var SubCategorytModelList = _mapper.Map<List<SubCategory>, List<SubCategoryViewModels>>(subCategories.ToList());
-            ViewData["SubCategoryID"] = new SelectList(SubCategorytModelList, "Id", "SubCategoryName", product.SubCategoryID);
+            var SubCategorytModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
+            ViewData["CategoryID"] = new SelectList(SubCategorytModelList, "Id", "CategoryName", product.CategoryID);
             return View(product);
         }
 
@@ -174,7 +176,7 @@ namespace InGame.Web.UI.Controllers
                 return NotFound();
             }
             var product = _productService.GetProductById(id.Value);
-            product.Subcategory = _subCategoryService.GetSubCategoryId(product.SubCategoryID.Value);
+            //product.Subcategory = _subCategoryService.GetSubCategoryId(product.SubCategoryID.Value);
             var ProductModel = _mapper.Map<Product, ProductViewModel>(product);
             if (ProductModel == null)
             {
@@ -196,7 +198,7 @@ namespace InGame.Web.UI.Controllers
 
         private bool ProductExists(int id)
         {
-            return _subCategoryService.IsAny(x => x.Id == id);
+            return _categoryService.IsAny(x => x.Id == id);
         }
     }
 }

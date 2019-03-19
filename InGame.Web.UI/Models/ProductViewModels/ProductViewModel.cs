@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using InGame.Web.UI.Models.CategoryViewModels;
+using InGame.Web.UI.Models.ParentCategoryViewModels;
 
 namespace InGame.Web.UI.Models.ProductViewModels
 {
@@ -21,7 +21,7 @@ namespace InGame.Web.UI.Models.ProductViewModels
         [Required]
         public bool IsActive { get; set; }
         [DisplayName("Category")]
-        public int? SubCategoryID { get; set; }
-        public virtual SubCategoryViewModel Subcategory { get; set; }
+        public int? CategoryID { get; set; }
+        public virtual CategoryViewModels Category { get; set; }
     }
 }

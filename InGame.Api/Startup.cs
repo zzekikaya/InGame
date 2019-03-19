@@ -54,8 +54,7 @@ namespace InGame.Api
 
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
 
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<ISubCategoryService, SubCategoryService>();
+            services.AddScoped<IProductService, ProductService>(); 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));

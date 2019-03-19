@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InGame.Infrastructure.Migrations
 {
     [DbContext(typeof(InGameContext))]
-    [Migration("20190317114151_InitialDbMigration21")]
-    partial class InitialDbMigration21
+    [Migration("20190318231623_InitialDbMigration3")]
+    partial class InitialDbMigration3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,9 +27,13 @@ namespace InGame.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("CategoryId");
+
                     b.Property<string>("CategoryName");
 
                     b.Property<string>("Description");
+
+                    b.Property<int?>("ParentCategoryId");
 
                     b.Property<string>("PictureUri");
 
@@ -46,6 +50,8 @@ namespace InGame.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("CategoryId");
+
                     b.Property<string>("Description");
 
                     b.Property<bool>("IsActive");
@@ -56,46 +62,18 @@ namespace InGame.Infrastructure.Migrations
 
                     b.Property<decimal>("Price");
 
-                    b.Property<int?>("SubCategoryID");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("SubCategoryID");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("InGame.Core.Entities.SubCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("CategoryID");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("SubCategoryName");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryID");
-
-                    b.ToTable("SubCategories");
-                });
-
             modelBuilder.Entity("InGame.Core.Entities.Product", b =>
                 {
-                    b.HasOne("InGame.Core.Entities.SubCategory", "Subcategory")
-                        .WithMany("Products")
-                        .HasForeignKey("SubCategoryID");
-                });
-
-            modelBuilder.Entity("InGame.Core.Entities.SubCategory", b =>
-                {
                     b.HasOne("InGame.Core.Entities.Category", "Category")
-                        .WithMany("SubCategories")
-                        .HasForeignKey("CategoryID");
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618
         }

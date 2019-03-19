@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewData["Title"] = "Category Tree View";
+}
+
+<h1>Category Tree View</h1>
+
+<br />
+<br />
+<div class="container">
+    @Html.Raw(ViewData["CategoryTreeList"].ToString())
+</div>
+<a asp-action="Index">Back to List</a>

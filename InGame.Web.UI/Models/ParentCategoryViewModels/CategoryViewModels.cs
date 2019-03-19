@@ -8,15 +8,14 @@ using InGame.Core.Entities;
 
 namespace InGame.Web.UI.Models.ParentCategoryViewModels
 {
-    public class ParentCategoryViewModels
+    public class CategoryViewModels
     {
-      
-        [Required]
-        public string SubCategoryName { get; set; }
+        public int Id { get; set; }
+        public int CategoryId { get; set; }
+        public int ParentCategoryId { get; set; } 
+        public string CategoryName { get; set; }
+        public string Uri { get; set; }
+        public string PictureUri { get; set; }
         public string Description { get; set; }
-        [Required]
-        public int? CategoryID { get; set; } 
-        public virtual Category Category { get; set; }
-        public virtual ICollection<Product> Products { get; set; }
     }
 }

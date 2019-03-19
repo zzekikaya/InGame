@@ -36,7 +36,7 @@ namespace InGame.Core.Services
 
         public Category Get(Expression<Func<Category, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _categoryRepository.Get(predicate);
         }
 
         public IQueryable<Category> GetAll(Expression<Func<Category, bool>> predicate)
@@ -54,6 +54,11 @@ namespace InGame.Core.Services
         {
             var result = _categoryRepository.GetByIdAsync(cagetoryId);
             return result.Result;
+        }
+
+        public Task<Category> GetCategoryByIdAsync(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IReadOnlyList<Category>> GetListByIdAsync(int id)

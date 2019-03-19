@@ -1,10 +1,13 @@
-﻿@model IEnumerable<InGame.Core.Entities.Category>
+﻿@model IEnumerable<InGame.Web.UI.Models.ParentCategoryViewModels.CategoryViewModels>
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
+<p>
+    <a asp-action="CategoryTreeView">Category TreeView </a>
+</p>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,6 +15,12 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ParentCategoryId)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.CategoryName)
             </th>
@@ -30,6 +39,12 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParentCategoryId)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CategoryName)
             </td>

@@ -22,7 +22,7 @@ namespace InGame.Tests.InGame.Core.Test
             var product = new Product();
             _mockProductRepo.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(product);
-            var productService = new ProductService(_mockProductRepo.Object, null, null);
+            var productService = new ProductService(_mockProductRepo.Object, null);
 
             await productService.GetByIdAsync(product.Id);
 
@@ -36,10 +36,10 @@ namespace InGame.Tests.InGame.Core.Test
             {
                 Name = "silah",
                 Description = "ücretsiz",
-                Price = 5000,
-                SubCategoryID = 1
+                Price = 5000
+                //,SubCategoryID = 1
             };
-            var productService = new ProductService(_mockProductRepo.Object, null, null);
+            var productService = new ProductService(_mockProductRepo.Object, null);
 
             await productService.AddAsync(product);
 
@@ -52,7 +52,7 @@ namespace InGame.Tests.InGame.Core.Test
             var product = new Product();
             _mockProductRepo.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(product);
-            var productService = new ProductService(_mockProductRepo.Object, null, null);
+            var productService = new ProductService(_mockProductRepo.Object, null);
 
             await productService.UpdateAsync(product);
 
@@ -65,7 +65,7 @@ namespace InGame.Tests.InGame.Core.Test
             var product = new Product();
             _mockProductRepo.Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(product);
-            var productService = new ProductService(_mockProductRepo.Object, null, null);
+            var productService = new ProductService(_mockProductRepo.Object, null);
 
             await productService.DeleteAsync(product);
 

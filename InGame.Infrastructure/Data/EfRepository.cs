@@ -59,15 +59,7 @@ namespace InGame.Infrastructure.Data
         {
             _dbContext.Set<T>().Remove(entity);
             await _dbContext.SaveChangesAsync();
-        }
-
-        public IEnumerable<Product>  Incules()
-        {
-          var products=  _dbContext.Products.Include(x => x.Subcategory);
-          IEnumerable<Product> result= products;
-          return result;
-        }
-
+        } 
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>().AsQueryable(), spec);
@@ -93,5 +85,7 @@ namespace InGame.Infrastructure.Data
         {
             return _dbSet.Where(predicate).Any();
         }
+
+       
     }
 }
