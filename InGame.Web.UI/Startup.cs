@@ -122,34 +122,7 @@ namespace InGame.Web.UI
             var _userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             AppIdentityDbContextSeed.SeedAsync(_userManager).Wait();
-            //// administrator
-            //var user = new ApplicationUser
-            //{
-            //    UserName = "Administrator",
-            //    Email = "admin@admin.com",
-            //    EmailConfirmed = true
-            //};
-            //var i = await _userManager.FindByEmailAsync(user.Email);
-            //if (i == null)
-            //{
-            //    try
-            //    {
-            //        var adminUser = await _userManager.CreateAsync(user, "!Sonypsp123");
-            //        if (adminUser.Succeeded)
-            //        {
-            //            await _userManager.AddToRoleAsync(user, "Admin");
-            //            //
-
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        Console.WriteLine(e);
-            //        throw;
-            //    }
-
-            //}
-
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

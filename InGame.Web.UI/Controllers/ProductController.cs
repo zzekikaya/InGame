@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
 using InGame.Core.Entities;
-using InGame.Core.Interfaces; 
-using InGame.Web.UI.Models.ProductViewModels; 
+using InGame.Core.Interfaces;
+using InGame.Web.UI.Models.ParentCategoryViewModels;
+using InGame.Web.UI.Models.ProductViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using InGame.Web.UI.Models.ParentCategoryViewModels;
 
 namespace InGame.Web.UI.Controllers
 {
@@ -30,24 +30,9 @@ namespace InGame.Web.UI.Controllers
         // GET: Product
         public async Task<IActionResult> Index()
         {
-            var producResult = _productService.ListAllAsync().Result.ToList();
-
-            var producties = producResult.Select(p => new Product
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                IsActive = p.IsActive,
-                PictureUri = p.PictureUri,
-                Price = p.Price,
-                CategoryId = p.CategoryId,
-                Category = _categoryService.Get(x=>x.CategoryId==p.CategoryId)
-            }).ToList();
-
+            var producties = _productService.ListAllAsync().Result.ToList();
             var ProductModelList = _mapper.Map<List<Product>, List<ProductViewModel>>(producties);
-
             return View(ProductModelList);
-            return null;
         }
 
         // GET: Product/Details/5
@@ -59,10 +44,10 @@ namespace InGame.Web.UI.Controllers
             }
 
             var product = _productService.GetProductById(id.Value);
-            product.Category = _categoryService.Get(x=>x.CategoryId==id);
+            var category = _categoryService.Get(x => x.CategoryId == product.CategoryId);
 
             var ProductModel = _mapper.Map<Product, ProductViewModel>(product);
-            ProductModel.Category = _mapper.Map<Category, CategoryViewModels>(product.Category);
+            ProductModel.Category = _mapper.Map<Category, CategoryViewModels>(category);
 
             if (ProductModel == null)
             {
@@ -76,9 +61,9 @@ namespace InGame.Web.UI.Controllers
         // GET: Product/Create
         public IActionResult Create()
         {
-            var subcategories = _categoryService.ListAllAsync().Result;
-            var subCategoryModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(subcategories.ToList());
-            ViewData["CategoryID"] = new SelectList(subCategoryModelList, "Id", "CategoryName");
+            var categories = _categoryService.ListAllAsync().Result;
+            var categoryModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
+            ViewData["CategoryID"] = new SelectList(categoryModelList, "Id", "CategoryName");
             return View();
         }
 
@@ -97,8 +82,8 @@ namespace InGame.Web.UI.Controllers
             }
 
             var categories = _categoryService.ListAllAsync().Result;
-            var subCategoryModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
-            ViewData["CategoryID"] = new SelectList(subCategoryModelList, "Id", "CategoryName", product.CategoryID);
+            var categoryModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
+            ViewData["CategoryID"] = new SelectList(categoryModelList, "Id", "CategoryName", product.CategoryID);
             return View(product);
         }
 
@@ -114,15 +99,13 @@ namespace InGame.Web.UI.Controllers
             var categories = _categoryService.ListAllAsync().Result;
 
             var ProductModel = _mapper.Map<Product, ProductViewModel>(product);
-            ProductModel.Category = _mapper.Map<Category, CategoryViewModels>(product.Category);
-            var subCategoryModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
-
+            var categoryViewModels = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
 
             if (ProductModel == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryID"] = new SelectList(subCategoryModelList, "Id", "CategoryName", product.CategoryId);
+            ViewData["CategoryID"] = new SelectList(categoryViewModels, "Id", "CategoryName", product.CategoryId);
             return View(ProductModel);
 
         }
@@ -163,8 +146,8 @@ namespace InGame.Web.UI.Controllers
 
             var categories = _categoryService.ListAllAsync().Result;
 
-            var SubCategorytModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
-            ViewData["CategoryID"] = new SelectList(SubCategorytModelList, "Id", "CategoryName", product.CategoryID);
+            var categorytModelList = _mapper.Map<List<Category>, List<CategoryViewModels>>(categories.ToList());
+            ViewData["CategoryID"] = new SelectList(categorytModelList, "Id", "CategoryName", product.CategoryID);
             return View(product);
         }
 
@@ -176,7 +159,6 @@ namespace InGame.Web.UI.Controllers
                 return NotFound();
             }
             var product = _productService.GetProductById(id.Value);
-            //product.Subcategory = _subCategoryService.GetSubCategoryId(product.SubCategoryID.Value);
             var ProductModel = _mapper.Map<Product, ProductViewModel>(product);
             if (ProductModel == null)
             {
@@ -198,7 +180,7 @@ namespace InGame.Web.UI.Controllers
 
         private bool ProductExists(int id)
         {
-            return _categoryService.IsAny(x => x.Id == id);
+            return _productService.IsAny(x => x.Id == id);
         }
     }
 }

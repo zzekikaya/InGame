@@ -62,16 +62,7 @@ namespace InGame.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("InGame.Core.Entities.Product", b =>
-                {
-                    b.HasOne("InGame.Core.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618
         }

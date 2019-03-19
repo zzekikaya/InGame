@@ -21,25 +21,12 @@ namespace InGame.Api.Controllers
             _categoryService = categoryService;
         }
 
-
         [HttpGet]
         public IEnumerable<Product> GetProductList()
         {
             var producResult = _productService.ListAllAsync().Result.ToList();
 
-            var producties = producResult.Select(p => new Product
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                IsActive = p.IsActive,
-                PictureUri = p.PictureUri,
-                Price = p.Price,
-                CategoryId = p.CategoryId,
-                Category = _categoryService.Get(x=>x.CategoryId==p.CategoryId)
-            }).ToList();
-
-            return producties;
+            return producResult;
         }
 
         //ürün detay sayfasında Id kullanıldı.
@@ -47,12 +34,6 @@ namespace InGame.Api.Controllers
         public ActionResult<Product> Get(int id)
         {
             var product = _productService.GetProductById(id);
-            if (product != null)
-            {
-                product.Category = _categoryService.Get(x=>x.CategoryId==product.CategoryId.Value);
-                 
-            }
-
             return product;
         }
 

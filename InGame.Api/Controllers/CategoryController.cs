@@ -12,81 +12,62 @@ namespace InGame.Api.Controllers
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "Trusted")]
     public class CategoryController : Controller
     {
-        private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
 
-        public CategoryController(IProductService productService, ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService)
         {
-            //_context = context;
-            _productService = productService;
             _categoryService = categoryService;
         }
 
-
         [HttpGet]
-        public IEnumerable<Product> GetProductList()
+        public IEnumerable<Category> GetCategoryList()
         {
-            var producResult = _productService.ListAllAsync().Result.ToList();
+            var categoryResult = _categoryService.ListAllAsync().Result.ToList();
 
-            var producties = producResult.Select(p => new Product
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                IsActive = p.IsActive,
-                PictureUri = p.PictureUri,
-                Price = p.Price
-            }).ToList();
-
-            return producties;
+            return categoryResult;
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<Product> Get(int id)
+        public ActionResult<Category> Get(int id)
         {
-            var product = _productService.GetProductById(id);
-            if (product != null)
-            {
-                product.Category = _categoryService.Get(x=>x.CategoryId==product.CategoryId);
+            var category = _categoryService.GetCagetoryById(id);
 
-            }
-
-            return product;
+            return category;
         }
 
         // POST api/values
         [HttpPost]
-        public void AddProduct([FromBody] Product model)
+        public void AddCategory([FromBody] Category model)
         {
             if (model != null)
             {
-                _productService.CreateProduct(model);
+                _categoryService.CreateCagetory(model);
             }
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void UpdateProduct(int id, [FromBody] Product model)
+        public void UpdateCategory(int id, [FromBody] Category model)
         {
-            var existProduct = ProductExists(id);
-            if (existProduct && model != null)
+            var existCategory= CategoryExists(id);
+            if (existCategory && model != null)
             {
-                _productService.UpdateProduct(model);
+                _categoryService.UpdateCagetory(model);
             }
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void DeleteProduct(int id)
+        public void DeleteCategory(int id)
         {
-            var product = _productService.GetProductById(id);
-            _productService.DeleteAsync(product);
+            var category = _categoryService.GetCagetoryById(id);
+            _categoryService.DeleteAsync(category);
         }
 
-        private bool ProductExists(int id)
+        private bool CategoryExists(int id)
         {
-            return _productService.IsAny(x => x.Id == id);
+            return _categoryService.IsAny(x => x.Id == id);
         }
     }
 }

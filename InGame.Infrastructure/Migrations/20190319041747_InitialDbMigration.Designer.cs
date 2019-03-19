@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InGame.Infrastructure.Migrations
 {
     [DbContext(typeof(InGameContext))]
-    [Migration("20190318231623_InitialDbMigration3")]
-    partial class InitialDbMigration3
+    [Migration("20190319041747_InitialDbMigration")]
+    partial class InitialDbMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,16 +64,7 @@ namespace InGame.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
-
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("InGame.Core.Entities.Product", b =>
-                {
-                    b.HasOne("InGame.Core.Entities.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
                 });
 #pragma warning restore 612, 618
         }
